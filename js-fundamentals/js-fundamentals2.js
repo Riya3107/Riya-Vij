@@ -372,3 +372,90 @@ const jonas = {
   console.log(calcAverage([2, 3, 7]));
   console.log(calcAverage(totals));
   console.log(calcAverage(tips));
+
+
+
+/*Write a function called 'describeCountry' which takes three parameters:
+'country', 'population' and 'capitalCity'. Based on this input, the
+function returns a string with this format: 'Finland has 6 million people and its
+capital city is Helsinki'. Call this function 3 times, with input data for 3 different countries. Store the
+returned values in 3 different variables, and log them to the console*/
+
+function describeCountry(country, population, capitalCity) {
+ return `${country} has ${population} million people and
+ its capital city is ${capitalCity}`;
+ }
+ const descPortugal = describeCountry('Portugal', 10,
+ 'Lisbon');
+ const descGermany = describeCountry('Germany', 83,
+ 'Berlin');
+ const descFinland = describeCountry('Finland', 6,
+ 'Helsinki');
+ console.log(descPortugal, descGermany, descFinland);
+
+
+
+
+
+function percentageOfWorld1(population) {
+ return (population / 7900) * 100;
+ }
+ const percentageOfWorld2 = function (population) {
+ return (population / 7900) * 100;
+ };
+ const percPortugal1 = percentageOfWorld1(10);
+ const percChina1 = percentageOfWorld1(1441);
+ const percUSA1 = percentageOfWorld1(332);
+ console.log(percPortugal1, percChina1, percUSA1);
+
+
+
+const describePopulation = function (country, population) {
+ const percentage = percentageOfWorld1(population);
+ const description = `${country} has ${population} million
+ people, which is about ${percentage}% of the world.`;
+ console.log(description);
+ };
+ describePopulation('Portugal', 10);
+ describePopulation('China', 1441);
+ describePopulation('USA', 332);
+
+
+
+console.log(
+ `${myCountry.country} has ${myCountry.population} million
+ ${myCountry.language}-speaking people,
+ ${myCountry.neighbours.length} neighbouring countries and
+ a capital called ${myCountry.capital}.`
+ );
+ myCountry.population += 2;
+ console.log(myCountry.population);
+ myCountry['population'] -= 2;
+ console.log(myCountry.population);
+
+
+
+const myCountry = {
+ country: 'Finland',
+ capital: 'Helsinki',
+ language: 'finnish',
+ population: 6,
+ neighbours: ['Norway', 'Sweden', 'Russia'],
+ describe: function () {
+ console.log(
+ `${this.country} has ${this.population} million
+ ${this.language}-speaking people,
+ ${this.neighbours.length} neighbouring countries and a
+ capital called ${this.capital}.`
+ );
+ },
+ checkIsland: function () {
+ this.isIsland = this.neighbours.length === 0 ? true :
+ false;
+ }
+ };
+ myCountry2.describe();
+ myCountry2.checkIsland();
+ console.log(myCountry2);
+
+
