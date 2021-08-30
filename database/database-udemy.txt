@@ -1,0 +1,527 @@
+-- Database: new
+
+-- DROP DATABASE new;
+
+CREATE DATABASE new
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'English_India.1252'
+    LC_CTYPE = 'English_India.1252'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+	
+	
+	
+/* 
+create the directors table
+*/ 
+
+CREATE TABLE directors (
+	director_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(30),
+	last_name VARCHAR(30) NOT NULL,
+	date_of_birth DATE, 
+	nationality VARCHAR(20)
+);
+
+INSERT INTO DIRECTORS (first_name, last_name, date_of_birth, nationality) VALUES ('Tomas','Alfredson','1965-04-01','Swedish'),
+('Paul','Anderson','1970-06-26','American'),
+('Zack','Snyder','1966-03-01','American'),
+('Sion','Sono','1961-12-18','Japanese'),
+('Steven','Spielberg','1946-12-18','American'),
+('Robert','Stevenson','1905-03-31','British'),
+('Quentin','Tarantino','1963-03-27','American'),
+('Robert','Wise','1914-09-10','American'),
+('Kar Wai','Wong','1958-07-17','Chinese'),
+('Robert','Zemeckis','1952-05-14','American'),
+('Yimou','Zhang','1950-04-02','Chinese');
+
+
+/*
+Create the actors table
+*/
+
+CREATE TABLE actors (
+	actor_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(30),
+	last_name VARCHAR(30),
+	gender CHAR(1),
+	date_of_birth DATE 
+);
+
+INSERT INTO actors (first_name, last_name, gender, date_of_birth) VALUES ('Malin','Akerman','F','1978-05-12'),
+('Tim','Allen','M','1953-06-13'),
+('Julie','Andrews','F','1935-10-01'),
+('Ivana','Baquero','F','1994-06-11'),
+('Lorraine','Bracco','F','1954-10-02'),
+('Gemma','Chan','F','1982-11-29'),
+('Chen','Chang','M','1976-10-14'),
+('Graham','Chapman','M','1941-01-08'),
+('Pei-pei','Cheng','F','1946-12-04'),
+('Maggie ','Cheung','F','1964-09-20'),
+('Hiroki','Doi','M','1999-08-10'),
+('Kirsten','Dunst','F','1982-04-30'),
+('Shelley','Duvall','F','1949-07-07'),
+('Ralph','Fiennes','M','1962-12-22'),
+('Mitsuru','Fukikoshi','M','1965-02-17'),
+('Clark','Gable','M','1901-02-01'),
+('Mason','Gamble','M','1986-01-16'),
+('Xian','Gao','M',null),
+('Andrew','Garfield','M','1983-08-20'),
+('Mark','Hamill','M','1951-09-25'),
+('Tom','Hanks','M','1956-07-09'),
+('Aki','Maeda','F','1985-07-11'),
+('Tobey','Maguire','M','1975-06-27'),
+('Bill','Murray','M','1950-09-21'),
+('Yasmin','Paige','F','1991-06-24');
+
+
+/*
+Create the movies table
+*/ 
+
+CREATE TABLE movies (
+	movie_id SERIAL PRIMARY KEY,
+	movie_name VARCHAR(50),
+	movie_length INT, 
+	movie_lang VARCHAR(20),
+	release_date DATE,
+	age_certificate VARCHAR(5),
+	director_id INT REFERENCES directors (director_id)
+);
+
+INSERT INTO movies (movie_name, movie_length, movie_lang, release_date, age_certificate, director_id) VALUES ('A Clockwork Orange','112','English','1972-02-02','18','13'),
+('Apocalypse Now','168','English','1979-08-15','15','9'),
+('Battle Royale ','111','Japanese','2001-01-04','18','10'),
+('Blade Runner ','121','English','1982-06-25','15','27'),
+('Chungking Express','113','Chinese','1996-08-03','15','35'),
+('City of God','145','Portuguese','2003-01-17','18','20'),
+('City of Men','140','Portuguese','2008-02-29','15','22'),
+('Cold Fish','108','Japanese','2010-09-12','18','30'),
+('Crouching Tiger Hidden Dragon','139','Chinese','2000-07-06','12','15'),
+('Eyes Wide Shut','130','English','1999-07-16','18','13'),
+('Forrest Gump','119','English','1994-07-06','PG','36'),
+('Gladiator','165','English','2000-05-05','15','27'),
+('Gone with the Wind','123','English','1939-12-15','PG','8'),
+('Goodfellas','148','English','1990-09-19','15','26'),
+('Grand Budapest Hotel','117','English','2014-07-03','PG','3'),
+('House of Flying Daggers','134','Chinese','2004-03-12','12','37');
+
+
+
+/*
+Create the movie_revenues 
+*/ 
+
+CREATE TABLE movie_revenues (
+	revenue_id SERIAL PRIMARY KEY,
+	domestic_takings DECIMAL(6,2),
+	international_takings DECIMAL(6,2)
+);
+
+INSERT INTO movie_revenues (revenue_id, domestic_takings, international_takings) VALUES ('1','22.2','1.3'),
+('2','199.4','201.2'),
+('3','102.1',null),
+('4','158.7',null),
+('6','27.1',null),
+('7',null,null),
+('17','260.3','210.9'),
+('9','28.1',null),
+('5','461.2','314.2'),
+('13', '83.4',null),
+('15','19.6',null),
+('8', '290.3','247.8'),
+('11','44.1',null),
+('12','23.1',null);
+
+
+/*
+Create the movies_actors 
+*/ 
+
+-- CREATE TABLE movies_actors (
+-- 	actor_id INT REFERENCES actors (actor_id),
+-- 	PRIMARY KEY (actor_id)
+-- );
+
+
+
+-- 1. Select the movie_name and release_date of every movie. 
+
+SELECT movie_name, release_date FROM movies;
+
+-- 2. Select the first and last names of all American directors. 
+
+SELECT first_name, last_name FROM directors 
+WHERE nationality = 'American';
+
+-- 3. Select all male actors born after the 1st of January 1970. 
+
+SELECT * FROM actors
+WHERE gender = 'M'
+AND date_of_birth > '1970-01-01';
+
+-- 4. Select the names of all movies which are over 90 minutes long and movie
+-- language is English.
+
+SELECT movie_name FROM movies
+WHERE movie_length > 90 
+AND movie_lang = 'English';
+
+
+-- 1.Select the movie names and movie language of all movies with a movie language of English, 
+-- Spanish or Korean. 
+
+SELECT movie_name, movie_lang FROM movies
+WHERE movie_lang IN ('English','Spanish','Korean');
+
+-- Select the first and last names of the actors whose last name begins with M and were born 
+-- between 01/01/1940 and 31/12/1969. 
+
+SELECT first_name, last_name FROM actors
+WHERE last_name LIKE 'M%'
+AND date_of_birth BETWEEN '1940-01-01' AND '1969-12-31';
+
+-- Select the first and last names of the directors with nationality of British, French or 
+-- German born between 01/01/1950 and 31/12/1980. 
+
+SELECT first_name, last_name FROM directors
+WHERE nationality IN ('British','French','German')
+AND date_of_birth BETWEEN '1950-01-01' AND '1980-12-31';
+
+
+-- 1. Select the American directors ordered from oldest to youngest. 
+
+SELECT * FROM directors
+WHERE nationality = 'American'
+ORDER BY date_of_birth;
+
+-- 2. Return the distinct nationalities from the directors table. 
+
+SELECT DISTINCT nationality FROM directors;
+
+-- 3. Return the first names, last names and date of births of the 10 youngest female actors.
+
+SELECT first_name, last_name, date_of_birth FROM actors
+WHERE gender = 'F'
+ORDER BY date_of_birth DESC
+LIMIT 10;
+
+
+-- 1. Return the top 3 movies with the highest international takings. 
+
+SELECT * FROM movie_revenues
+WHERE international_takings IS NOT NULL
+ORDER BY international_takings DESC
+LIMIT 3;
+
+-- 2. Concatenate the first and last names of the directors, separated by a space, 
+-- and call this new column full_name. 
+
+SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM directors;
+
+-- 3. Return the actors with missing first_names or missing date_of_births. 
+
+SELECT * FROM actors
+WHERE first_name IS NULL 
+OR date_of_birth IS NULL;
+
+
+
+-- selecting data from a table 
+
+
+SELECT * FROM directors;
+
+SELECT first_name FROM directors;
+
+SELECT first_name, last_name FROM directors;
+
+SELECT first_name, last_name, nationality FROM directors;
+
+-- Retrieving data with a where clause 
+
+
+SELECT * FROM movies
+WHERE age_certificate = '15';
+
+SELECT * FROM movies
+WHERE age_certificate = '15'
+AND movie_lang = 'Chinese';
+
+SELECT * FROM movies
+WHERE age_certificate = '15'
+OR movie_lang = 'Chinese';
+
+SELECT * FROM movies 
+WHERE movie_lang = 'English'
+AND age_certificate = '15'
+AND director_id = 27;
+
+-- Using logical operators 
+
+SELECT movie_name, movie_length FROM movies
+WHERE movie_length > 120;
+
+SELECT movie_name, movie_length FROM movies
+WHERE movie_length >= 120;
+
+SELECT movie_name, movie_length FROM movies
+WHERE movie_length < 120;
+
+SELECT movie_name, movie_length FROM movies
+WHERE movie_length <= 120;
+
+SELECT * FROM movies
+WHERE release_date < '1999-12-31';
+
+SELECT * FROM movies
+WHERE movie_lang <= 'English';
+
+
+-- Using IN and NOT IN 
+
+
+SELECT first_name, last_name FROM actors 
+WHERE first_name IN ('Bruce','John');
+
+SELECT first_name, last_name FROM actors 
+WHERE first_name IN ('Bruce','John','Peter');
+
+SELECT first_name, last_name FROM actors 
+WHERE first_name NOT IN ('Bruce','John','Peter');
+
+SELECT actor_id, first_name, last_name FROM actors 
+WHERE actor_id IN (2,3,4,5,6,8);
+
+SELECT actor_id, first_name, last_name FROM actors 
+WHERE actor_id NOT IN (2,3,4,5,6,8);
+
+-- Using LIKE with % and _ 
+  
+
+SELECT * FROM actors 
+WHERE first_name LIKE 'P%';
+
+SELECT * FROM actors 
+WHERE first_name LIKE 'Pe_';
+
+SELECT * FROM actors 
+WHERE first_name LIKE '%rl%';
+
+SELECT * FROM actors 
+WHERE first_name LIKE '__rl__';
+
+-- selecting data where a column is between 2 values 
+
+SELECT * FROM movies;
+
+SELECT movie_name, release_date FROM movies 
+WHERE release_date BETWEEN '1995-01-01' AND '1999-12-31';
+
+SELECT movie_name, movie_length FROM movies
+WHERE movie_length BETWEEN 90 AND 120;
+
+SELECT movie_name, movie_lang FROM movies 
+WHERE movie_lang BETWEEN 'Eo' AND 'Portuguese';
+
+-- Ordering the results returned 
+
+SELECT * FROM actors;
+
+SELECT first_name, last_name, date_of_birth FROM actors 
+ORDER BY first_name;
+
+SELECT actor_id, first_name, last_name, date_of_birth FROM actors 
+ORDER BY actor_id DESC;
+
+SELECT actor_id, first_name, last_name, date_of_birth FROM actors 
+WHERE gender = 'F'
+ORDER BY date_of_birth DESC;
+
+-- Limiting the number of records returned 
+
+SELECT * FROM movie_revenues
+ORDER BY revenue_id
+LIMIT 8 OFFSET 2;
+
+-- Using Fetch 
+
+SELECT movie_id, movie_name FROM movies 
+FETCH FIRST 1 ROW ONLY;
+
+SELECT movie_id, movie_name FROM movies 
+FETCH FIRST 10 ROW ONLY;
+
+SELECT movie_id, movie_name FROM movies 
+OFFSET 8 ROWS
+FETCH FIRST 10 ROW ONLY;
+
+-- Distinct values 
+
+SELECT DISTINCT movie_lang, age_certificate FROM movies 
+ORDER BY movie_lang;
+
+SELECT DISTINCT * FROM movies;
+
+-- Dealing with NULL values 
+
+SELECT * FROM actors
+WHERE date_of_birth IS NOT NULL;
+
+SELECT * FROM movie_revenues
+WHERE domestic_takings IS NOT NULL
+ORDER BY domestic_takings DESC;
+
+SELECT * FROM movie_revenues
+WHERE international_takings IS NULL;
+
+
+-- Using concatenate  
+
+SELECT 'concat' || 'together' AS new_string;
+SELECT 'concat' || ' ' || 'together' AS new_string;
+
+SELECT CONCAT(first_name, last_name) AS full_name FROM actors;
+
+SELECT CONCAT(first_name,' ', last_name) AS full_name FROM actors;
+
+
+-- 1. Count the number of actors born after the 1st of January 1970. 
+
+SELECT COUNT(*) FROM actors 
+WHERE date_of_birth > '1970-01-01';
+
+-- 2. What was the highest and lowest domestic takings for a movie?
+
+SELECT MAX(domestic_takings) FROM movie_revenues;
+SELECT MIN(domestic_takings) FROM movie_revenues;
+
+-- 3. What is the sum total movie length for movies rated 15?
+
+SELECT SUM(movie_length) FROM movies
+WHERE age_certificate = '15';
+
+-- 4. How many Japanese directors are in the directors table?
+
+SELECT COUNT(*) FROM directors
+WHERE nationality = 'Japanese';
+
+-- 5. What is the average movie length for Chinese movies?
+
+SELECT AVG(movie_length) FROM movies 
+WHERE movie_lang = 'Chinese';
+
+-- 1. How many directors are there per nationality? 
+
+SELECT nationality, COUNT(nationality) FROM directors
+GROUP BY nationality;
+
+-- 2. What is the sum total movie length for each age certificate and movie language combination? 
+
+SELECT movie_lang, age_certificate, SUM(movie_length) FROM movies 
+GROUP BY movie_lang, age_certificate
+ORDER BY movie_lang, age_certificate;
+
+-- 3. Return the movie languages which have a sum total movie length of over 500 minutes.
+
+SELECT movie_lang, SUM(movie_length) FROM movies
+GROUP BY movie_lang 
+HAVING SUM(movie_length) > 500;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 2. Create the owners table
+
+CREATE TABLE owners (
+
+	id SERIAL PRIMARY KEY,
+	first_name VARCHAR(30),
+	last_name VARCHAR(30),
+	city VARCHAR(30),
+	state CHAR(2)
+);
+
+SELECT * FROM owners;
+
+-- 3. Create the pets table (with a foreign key)
+
+CREATE TABLE pets (
+
+	id SERIAL PRIMARY KEY, 
+	species VARCHAR(30),
+	full_name VARCHAR(30),
+	age INT, 
+	owner_id INT REFERENCES owners(id)
+);
+
+SELECT * FROM pets;
+
+-- 4. Add an email column to the owners table
+
+ALTER TABLE owners
+ADD COLUMN email VARCHAR(50) UNIQUE;
+
+SELECT * FROM owners;
+
+-- 5. Change the data type of the last_name column in the owners table to VARCHAR(50).
+
+ALTER TABLE owners
+ALTER COLUMN last_name TYPE VARCHAR(50);
+
+SELECT * FROM owners;
+
+
+-- 1. Insert the data into the owners table
+
+INSERT INTO owners (first_name, last_name, city, state, email)
+VALUES ('Samuel','Smith','Boston','MA','samsmith@gmail.com'),
+('Emma','Johnson','Seattle','WA','emjohnson@gmail.com'),
+('John','Oliver','New York','NY','johnoliver@gmail.com'),
+('Olivia','Brown','San Francisco','CA','oliviabrown@gmail.com'),
+('Simon','Smith','Dallas','TX','sismith@gmail.com'),
+(null,'Maxwell',null,'CA','lordmaxwell@gmail.com');
+
+SELECT * FROM owners;
+
+-- 2. Insert the data into the pets table
+
+INSERT INTO pets (species, full_name, age, owner_id)
+VALUES ('Dog','Rex',6,1),
+('Rabbit','Fluffy',2,5),('Cat','Tom',8,2),('Mouse','Jerry',2,2),
+('Dog','Biggles',4,2),('Tortoise','Squirtle',42,3);
+
+SELECT * FROM pets;
+
+-- 3. Update Fluffy the rabbits age to 3
+
+UPDATE pets
+SET age = 3
+WHERE full_name = 'Fluffy';
+
+SELECT * FROM pets;
+
+-- 4. Delete Mr Maxwell from the owners table
+
+SELECT * FROM owners;
+
+DELETE FROM owners
+WHERE last_name = 'Maxwell';
+
+
+
+
