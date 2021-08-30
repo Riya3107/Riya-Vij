@@ -1,0 +1,321 @@
+-- Database: API PROJECT
+
+-- DROP DATABASE "API PROJECT";
+
+CREATE DATABASE "API PROJECT"
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'English_India.1252'
+    LC_CTYPE = 'English_India.1252'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+	
+
+
+--Create table PROJECT--
+CREATE TABLE project (
+	project_id INT PRIMARY KEY,
+	project_name VARCHAR(80),
+	project_description VARCHAR(100),
+	project_logo VARCHAR(30)
+);
+
+SELECT * FROM project;
+
+INSERT INTO project (project_id, project_name, project_description, project_logo)
+VALUES ('1', 'School Database System', 'Manage schools database system', 'school.jpg'),
+('2', 'Hotel Database System', 'Manage hotel database system', 'hotel.jpg'),
+('3', 'PG', 'Finding PGs nearby', 'PG.jpg'),
+('4', 'Noteslelo', 'Provide notes of all courses', 'notes.jpg'),
+('5', 'Science lab', 'Manage Lab databse', 'lab.jpg'),
+('6', 'Vaccinated', 'Vaccinated people database', 'vaccine.jpg'),
+('7', 'Online Retail Application Database', 'Manage online retail application databases ', 'retail.jpg'),
+('8', 'Payroll Management System', 'Manage Payroll databases ', 'Payroll.jpg'),
+('9', 'Blood Donation Database', 'Store interrelated data on patients, blood donors, and blood banks ', 'Blood.jpg'),
+('10', 'Insurance Management System Database', 'Manages Insurance related data ', 'Blood.jpg');
+
+
+
+
+
+--Create table MODULE--
+CREATE TABLE modules (
+	module_id INT PRIMARY KEY,
+	module_name VARCHAR(80) NOT NULL,
+	module_description VARCHAR(100),
+	project_id INT REFERENCES project (project_id)
+);
+
+SELECT * FROM modules
+
+INSERT INTO modules (module_id, module_name, module_description, project_id)
+VALUES ('1', 'School Module', 'Classes and Courses', '1'),
+('2', 'Hotel Module', 'Rooms', '2'),
+('3', 'PG Module', 'Rooms and Places', '3'),
+('4', 'Notes', 'Semester wise courses', '4'),
+('5', 'lab items', 'chem lab items', '5'),
+('6', 'Fully vaccinated', 'Fully vaccinated in India', '6'),
+('7', 'Online Retail Application ', 'purchases and sales', '7'),
+('8', 'Payroll according to department', 'Department wise payroll', '8'),
+('9', 'Blood Donation ', 'Blood of b+ and b-', '9'),
+('10', 'Insurance Management ', 'life insurance', '10');
+
+
+
+
+
+
+--Create table API--
+CREATE TABLE api (
+	api_id INT PRIMARY KEY,
+	api_name VARCHAR(80) NOT NULL,
+	api_description VARCHAR(100),
+	api_method VARCHAR(80),
+	api_request VARCHAR(80),
+	api_response VARCHAR(80),
+	project_name VARCHAR(80),
+	module_id INT,
+	FOREIGN KEY (module_id) REFERENCES modules(module_id)
+);
+
+SELECT * FROM api;
+
+INSERT INTO api (api_id, api_name, api_description, api_method, api_request, api_response, project_name, module_id)
+VALUES ('1', 'api_name1', 'description1', 'POST', 'request1', 'response1', 'School Database System', '1'),
+('2', 'api_name2', 'description2', 'POST', 'request2', 'response2', 'Hotel Database System' ,  '2'),
+('3', 'api_name3', 'description3', 'GET', 'request3', 'response3', 'PG' , '3'),
+('4', 'api_name4', 'description4', 'UP', 'request4', 'response4', 'Noteslelo' ,'4'),
+('5', 'api_name5', 'description5', 'DATE', 'request5', 'response5', 'Science lab' ,'5'),
+('6', 'api_name6', 'description6', 'DELETE', 'request6', 'response6' , 'Vaccinated' ,'6'),
+('7', 'api_name7', 'description7', 'PATCH', 'request7', 'response7' , 'Online Retail Application Database' ,'7'),
+('8', 'api_name8', 'description8', 'PUT', 'request8', 'response8' , 'Payroll Management System' ,'8'),
+('9', 'api_name9', 'description9', 'GET', 'request9', 'response9' , 'Blood Donation Database' ,'9'),
+('10', 'api_name10', 'description10', 'DELETE', 'request10', 'response10', 'Insurance Management System Database' ,'10');
+
+
+
+
+
+
+--create table USERS
+CREATE TABLE users (
+	user_id INT PRIMARY KEY,
+	first_name VARCHAR(80) ,
+	last_name VARCHAR(100)NOT NULL,
+	email_address VARCHAR(80),
+	gender VARCHAR(20),
+	profile_picture VARCHAR(80)	
+);
+
+SELECT * FROM users;
+
+INSERT INTO users (user_id, first_name, last_name , email_address, gender, profile_picture)
+VALUES ('10', 'Riya', 'Vij', 'riyavij@gmail.com', 'Female', 'profile1.jpg'),
+('11', 'Tushar', 'Chadha', 'tushar@gmail.com', 'Male', 'profile2.jpg'),
+('12', 'Suvan', 'Dua', 'suvan@gmail.com', 'Male', 'profile3.jpg'),
+('13', 'Sejal', 'Jain', 'sejal@gmail.com', 'Female', 'profile4.jpg'),
+('14', 'Harshit', 'Arora', 'harshit@gmail.com', 'Male', 'profile5.jpg'),
+('15', 'Divij', 'Sindhwani', 'divij@gmail.com', 'Male', 'profile6.jpg'),
+('16', 'Mehak', 'Kumar', 'mehak@gmail.com', 'Female', 'profile7.jpg'),
+('17', 'Yash', 'Solanki', 'yash@gmail.com', 'Male', 'profile8.jpg'),
+('18', 'Rahul', 'Dhaka', 'rahul@gmail.com', 'Male', 'profile9.jpg'),
+('19', 'Aditya', 'Arora', 'aditya@gmail.com', 'Male', 'profile10.jpg');
+
+
+
+
+
+
+--Create table user_adress--
+CREATE TABLE user_address (
+	address_id INT PRIMARY KEY,
+	zip INT,
+	address VARCHAR(100),
+	country VARCHAR(40),
+	user_state VARCHAR(40),
+	city VARCHAR(40),
+	user_id INT REFERENCES users(user_id)
+);
+
+SELECT * FROM user_address;
+
+INSERT INTO user_address (address_id, zip, address , country, user_state, city, user_id)
+VALUES ('20', '110063', 'Paschim Vihar', 'India', 'Delhi', 'Delhi', '10'),
+('21', '111045', 'Baner Gaon', 'India', 'Maharashtra', 'Pune', '11'),
+('22', '110001', 'Baroda House', 'India', 'Delhi', 'Delhi', '12'),
+('23', '110013', 'Hazrat Nizamuddin', 'India', 'Delhi', 'Delhi', '13'),
+('24', '110010', 'Delhi Cantt', 'India', 'Delhi', 'Delhi', '14'),
+('25', '110041', 'Mundka', 'Us', 'Delhi', 'Delhi', '15'),
+('26', '110002', 'Ajmeri Gate', 'India', 'Delhi', 'Delhi', '16'),
+('27', '110005', 'Anand Nagar', 'India', 'Delhi', 'Delhi', '17'),
+('28', '110004', 'Rashtrapati Bhawan', 'India', 'Delhi', 'Delhi', '18'),
+('29', '110027', 'Rajouri Garden', 'India', 'Delhi', 'Delhi', '19');
+
+
+
+
+
+
+
+-- create table user_project
+CREATE TABLE user_project (
+	user_id INT REFERENCES users(user_id),
+	project_id INT REFERENCES project(project_id)
+);
+
+SELECT * FROM user_project;
+
+INSERT INTO user_project (user_id, project_id)
+VALUES ('10', '1'),
+('11', '2'),
+('12', '3'),
+('13', '4'),
+('14', '5'),
+('15', '6'),
+('16', '7'),
+('17', '8'),
+('18', '9'),
+('19', '10')
+
+
+
+
+
+
+--Queries--
+--get list of the project--
+SELECT * FROM project; 
+
+--get list of the module--
+SELECT * FROM modules; 
+
+--get list of the api--
+SELECT * FROM api; 
+
+--get list of the users--
+SELECT * FROM users; 
+
+--get list of the user_address--
+SELECT * FROM user_address; 
+
+--get list of the project and its module and API
+SELECT project.project_id, project.project_name, project.project_description, modules.module_name, api.api_name
+FROM project
+JOIN modules ON project.project_id = modules.project_id
+JOIN api ON modules.module_id = api.module_id
+
+--or-- 
+SELECT p.project_id, p.project_name, p.project_description, m.module_name, a.api_name
+FROM project p
+JOIN modules m ON p.project_id = m.project_id
+JOIN api a ON m.module_id = a.module_id;
+
+-- 12) get list of API with project name--
+SELECT api_id, api_name, project_name FROM api;
+
+-- 13) get total number of APIs module wise--
+SELECT count(api_id)
+FROM api
+JOIN modules ON api.module_id = modules.module_id
+WHERE modules.module_name = 'Notes';
+
+
+-- 14) get total number of APIs project wise--
+SELECT COUNT(api_id)
+FROM api
+JOIN modules ON modules.module_id = api.module_id
+JOIN project ON project.project_id = modules.project_id
+WHERE project.project_name = 'Vaccinated'
+
+-- 15) get list of users with user address --
+SELECT users.user_id, users.first_name, users.last_name, users.email_address, users.gender, user_address.address, user_address.country
+FROM users
+JOIN user_address ON users.user_id = user_address.user_id
+
+--or
+SELECT * FROM users
+INNER JOIN user_address
+ON user_address.user_id = users.user_id;
+
+--or
+SELECT * FROM users
+LEFT JOIN user_address
+ON user_address.user_id = users.user_id;
+
+-- 16) get list of project assigned to particular user
+SELECT user_project.project_id, project.project_name,user_project.user_id, users.first_name, users.last_name
+FROM user_project
+JOIN project ON user_project.project_id = project.project_id
+JOIN users ON user_project.user_id = users.user_id;
+
+
+SELECT user_project.project_id, project.project_name,user_project.user_id, users.first_name, users.last_name
+FROM user_project
+JOIN project ON user_project.project_id = project.project_id
+JOIN users ON user_project.user_id = users.user_id
+WHERE users.first_name = 'Riya';
+
+-- 17) search project with project title using LIKE
+SELECT * FROM project
+WHERE project_name LIKE 'Science lab';
+
+SELECT * FROM project
+WHERE project_name LIKE 'S%';
+
+SELECT * FROM project
+WHERE project_name LIKE 'No_%';
+
+SELECT * FROM project
+WHERE project_name LIKE '%m';
+
+-- 19) get user list who have same country
+SELECT users.user_id, users.first_name, users.last_name, user_address.country
+FROM users
+JOIN user_address ON users.user_id = user_address.user_id 
+WHERE country = 'India';
+
+-- 20) get user list by Zipcode
+SELECT users.user_id, users.first_name, users.last_name, user_address.zip
+FROM users
+JOIN user_address ON users.user_id = user_address.user_id;
+
+--or
+SELECT users.user_id, users.first_name, users.last_name, user_address.zip
+FROM users
+JOIN user_address ON users.user_id = user_address.user_id
+WHERE zip = '110063';
+
+-- 21) get list of API whose method is POST
+SELECT api_id, api_name, api_method
+FROM api
+WHERE api_method = 'POST';
+
+-- 22) get list of API whose method is PUT
+SELECT api_id, api_name, api_method
+FROM api
+WHERE api_method = 'PUT';
+
+-- 23) get list of API whose method is DELETE
+SELECT api_id, api_name, api_method
+FROM api
+WHERE api_method = 'DELETE';
+
+-- 24) get list of API whose method is GET
+SELECT api_id, api_name, api_method
+FROM api
+WHERE api_method = 'GET';
+
+-- 25) get list of API for specific module
+SELECT api.api_id , api.api_name, api.module_id, modules.module_name
+FROM api
+JOIN modules ON api.module_id = modules.module_id  
+
+-- 26) get list of module for specific project
+SELECT modules.module_id , modules.module_name, project.project_id, project.project_name
+FROM modules
+JOIN project ON modules.project_id = project.project_id  
+
+
+
+
