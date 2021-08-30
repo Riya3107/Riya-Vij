@@ -309,12 +309,14 @@ WHERE api_method = 'GET';
 -- 25) get list of API for specific module
 SELECT api.api_id , api.api_name, api.module_id, modules.module_name
 FROM api
-JOIN modules ON api.module_id = modules.module_id  
+JOIN modules ON api.module_id = modules.module_id
+WHERE modules.module_name = 'PG Module';
 
 -- 26) get list of module for specific project
 SELECT modules.module_id , modules.module_name, project.project_id, project.project_name
 FROM modules
-JOIN project ON modules.project_id = project.project_id  
+JOIN project ON modules.project_id = project.project_id
+WHERE project.project_name = 'Vaccinated';
 
 
 
